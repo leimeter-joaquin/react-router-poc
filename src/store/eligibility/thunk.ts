@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
-export const eligibilityThunk = createAsyncThunk(
+export const eligibilityThunk: any = createAsyncThunk(
   "eligibility/fetch",
   async (_, { rejectWithValue }) => {
     try {

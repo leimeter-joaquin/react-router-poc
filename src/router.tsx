@@ -6,8 +6,18 @@ import { store } from "./store";
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const router: any = createBrowserRouter([
   {
+    path: "*",
+    loader: () => {
+      console.log("404 loader");
+      return null;
+    },
+    element: <div>404 Not Found</div>,
+  },
+  {
     path: "/",
     loader: async () => {
+      console.log("root loader");
+
       const data = await store.dispatch(eligibilityThunk());
 
       if (!data.payload.isOptedIn) {
