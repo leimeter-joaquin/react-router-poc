@@ -2,15 +2,13 @@ import { createSlice } from "@reduxjs/toolkit";
 import { eligibilityThunk } from "./thunk";
 
 export interface EligibilityState {
-  EligibilityCheckFlag: boolean;
-  isOptedIn: boolean;
+  isOptedIn: boolean | null;
   status: "idle" | "loading" | "succeeded" | "failed";
   error: string | null;
 }
 
 const initialState: EligibilityState = {
-  EligibilityCheckFlag: false,
-  isOptedIn: false,
+  isOptedIn: null,
   status: "idle",
   error: null,
 };
@@ -18,14 +16,11 @@ const initialState: EligibilityState = {
 export const eligibilitySlice = createSlice({
   name: "eligibility",
   initialState,
-  reducers: {
-    setEligibilityCheckFlag: (state, action) => {
-      state.EligibilityCheckFlag = action.payload;
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(eligibilityThunk.pending, (state) => {
+        state.isOptedIn = null;
         state.status = "loading";
         state.error = null;
       })
@@ -39,7 +34,5 @@ export const eligibilitySlice = createSlice({
       });
   },
 });
-
-export const { setEligibilityCheckFlag } = eligibilitySlice.actions;
 
 export default eligibilitySlice.reducer;

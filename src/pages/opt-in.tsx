@@ -12,5 +12,15 @@ export const Component = () => {
     console.log("isOptedIn", isOptedIn);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  return <div>opt-in</div>;
+  return (
+    <div
+      style={{
+        backgroundColor: "light-green",
+        height: "500px",
+        width: "500px",
+      }}
+    >
+      opt-in
+    </div>
+  );
 };

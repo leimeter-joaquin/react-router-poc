@@ -1,6 +1,8 @@
 import { createBrowserRouter, redirect } from "react-router-dom";
 import { eligibilityThunk } from "./store/eligibility/thunk";
 import { store } from "./store";
+import Root from "./pages";
+import { log } from "./logger";
 
 // Show usage of redux with loaders, dispatch and select from element.
 // short term: managing redirects.
@@ -14,29 +16,46 @@ export const router: any = createBrowserRouter([
       console.log("404 loader");
       return null;
     },
-    element: <div>404 Not Found</div>,
+    element: (
+      <div
+        style={{
+          backgroundColor: "red",
+          height: "500px",
+          width: "500px",
+          textAlign: "center",
+        }}
+      >
+        NOT FOUND
+      </div>
+    ),
   },
 
   {
     errorElement: <div>error</div>,
     path: "/",
     // This will run every time the user navigates to the root path or any of it's child routes.
+    element: <Root />,
     loader: async () => {
-      console.log("loader root");
-
+      log("root loader", "darkcyan");
+      // we do app initialization while showing the fallback element or loader. check `src/main.tsx`
+      await store.dispatch(eligibilityThunk());
       return null;
     },
     children: [
       {
         path: "portal",
         lazy: () => import("./pages/portal/portal"),
-        loader: async () => {
-          console.log("loader portal");
-          const data = await store.dispatch(eligibilityThunk());
-          if (!data.payload.isOptedIn) {
-            console.log("redirecting to /opt-in");
+        loader: () => {
+          log("portal loader", "green");
+
+          const state = store.getState();
+          log("state from getState()", "green", state.eligibilityReducer);
+
+          if (!state.eligibilityReducer.isOptedIn) {
+            log("redirecting to /opt-in", "green");
             return redirect("/opt-in");
           }
+          log("%portal loader finished", "green");
           return null;
         },
         children: [
@@ -46,13 +65,14 @@ export const router: any = createBrowserRouter([
       },
       {
         path: "opt-in",
-        loader: async () => {
-          console.log("loader opt-in");
-          const data = await store.dispatch(eligibilityThunk());
-          if (data.payload.isOptedIn) {
-            console.log("redirecting to /portal");
+        loader: () => {
+          log("opt-in loader", "brown");
+          const state = store.getState();
+          if (state.eligibilityReducer.isOptedIn) {
+            log("redirecting to /portal", "brown");
             return redirect("/portal");
           }
+          log("opt-in loader finished", "brown");
           return null;
         },
         lazy: () => import("./pages/opt-in"),
