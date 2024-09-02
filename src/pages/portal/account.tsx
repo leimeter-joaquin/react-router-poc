@@ -1,11 +1,12 @@
 import React from "react";
-import { Await, defer, useLoaderData } from "react-router-dom";
+import { Await, defer, Outlet, useLoaderData } from "react-router-dom";
 
+// TODO: change this to payments
 type LoaderData = { isOptedIn: boolean };
 
 /* eslint-disable react-refresh/only-export-components */
 export function loader() {
-  console.log("loader portal");
+  console.log("loader account");
 
   const promise: Promise<LoaderData> = new Promise((resolve) => {
     setTimeout(() => {
@@ -20,10 +21,13 @@ export const Component = () => {
   const data = useLoaderData();
 
   return (
-    <React.Suspense fallback={<p>Loading portal</p>}>
-      <Await resolve={data} errorElement={<p>portal fail</p>}>
+    <React.Suspense fallback={<p>Loading acount</p>}>
+      <Await resolve={data} errorElement={<p>acount fail</p>}>
         {(data) => (
-          <p>portal nice {JSON.stringify(data.isOptedIn, null, 2)} </p>
+          <div>
+            <p>acount {JSON.stringify(data.isOptedIn, null, 2)} </p>
+            <Outlet />
+          </div>
         )}
       </Await>
     </React.Suspense>

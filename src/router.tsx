@@ -1,7 +1,10 @@
-import { createBrowserRouter } from "react-router-dom";
-import { redirect } from "react-router-dom";
+import { createBrowserRouter, redirect } from "react-router-dom";
 import { eligibilityThunk } from "./store/eligibility/thunk";
 import { store } from "./store";
+
+// Show usage of redux with loaders, dispatch and select from element.
+// short term: managing redirects.
+// long term: show usage of laoders in other situations.
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const router: any = createBrowserRouter([
@@ -13,28 +16,47 @@ export const router: any = createBrowserRouter([
     },
     element: <div>404 Not Found</div>,
   },
+
   {
+    errorElement: <div>error</div>,
     path: "/",
+    // This will run every time the user navigates to the root path or any of it's child routes.
     loader: async () => {
-      console.log("root loader");
+      console.log("loader root");
 
-      const data = await store.dispatch(eligibilityThunk());
-
-      if (!data.payload.isOptedIn) {
-        console.log("redirecting to /opt-in");
-        return redirect("/opt-in");
-      } else {
-        console.log("redirecting to /portal");
-        return redirect("/portal");
-      }
+      return null;
     },
-  },
-  {
-    path: "/portal",
-    lazy: () => import("./pages/portal"),
-  },
-  {
-    path: "/opt-in",
-    lazy: () => import("./pages/opt-in"),
+    children: [
+      {
+        path: "portal",
+        lazy: () => import("./pages/portal/portal"),
+        loader: async () => {
+          console.log("loader portal");
+          const data = await store.dispatch(eligibilityThunk());
+          if (!data.payload.isOptedIn) {
+            console.log("redirecting to /opt-in");
+            return redirect("/opt-in");
+          }
+          return null;
+        },
+        children: [
+          { path: "payments", lazy: () => import("./pages/portal/payments") },
+          { path: "account", lazy: () => import("./pages/portal/account") },
+        ],
+      },
+      {
+        path: "opt-in",
+        loader: async () => {
+          console.log("loader opt-in");
+          const data = await store.dispatch(eligibilityThunk());
+          if (data.payload.isOptedIn) {
+            console.log("redirecting to /portal");
+            return redirect("/portal");
+          }
+          return null;
+        },
+        lazy: () => import("./pages/opt-in"),
+      },
+    ],
   },
 ]);

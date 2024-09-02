@@ -1,14 +1,16 @@
-/* eslint-disable react-refresh/only-export-components */
-export function loader(): Promise<null> {
-  console.log("loader Opt in");
-
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(null);
-    }, 2000);
-  });
-}
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
 
 export const Component = () => {
+  // We are sure that this state exists because we called the thunk in the root loader.
+  const isOptedIn = useSelector(
+    (state) => (state as any).eligibilityReducer.isOptedIn
+  );
+
+  useEffect(() => {
+    console.log("isOptedIn", isOptedIn);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return <div>opt-in</div>;
 };
