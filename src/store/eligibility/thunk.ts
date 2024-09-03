@@ -6,12 +6,12 @@ export const eligibilityThunk: any = createAsyncThunk(
   "eligibility/fetch",
   async (_, { rejectWithValue }) => {
     try {
-      log("eligibilityThunk runs", "white");
+      log("eligibilityThunk runs", "gray");
 
       // Simulate async operation with setTimeout
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      log("eligibilityThunk resolved", "darkkhaki");
+      log("eligibilityThunk resolved", "gray");
       return { isOptedIn: true };
     } catch (error: any) {
       return rejectWithValue(error.message);

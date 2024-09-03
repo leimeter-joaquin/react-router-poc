@@ -49,13 +49,13 @@ export const router: any = createBrowserRouter([
           log("portal loader", "green");
 
           const state = store.getState();
-          log("state from getState()", "green", state.eligibilityReducer);
+          // log("state from getState()", "green", state.eligibilityReducer);
 
           if (!state.eligibilityReducer.isOptedIn) {
             log("redirecting to /opt-in", "green");
             return redirect("/opt-in");
           }
-          log("%portal loader finished", "green");
+          log("portal loader finished", "green");
           return null;
         },
         children: [

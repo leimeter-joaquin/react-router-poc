@@ -1,23 +1,13 @@
-import { Navigate, Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Navigate, Outlet, useNavigate } from "react-router-dom";
 
 const Root = () => {
   const navigate = useNavigate();
-  const location = useLocation();
+  // TODO: WHy doesn't the root loader run when navigating to "/" ?
 
   return (
     <div>
+      <button onClick={() => navigate("/")}>Home</button>
       <Navigate to="/portal" replace={true} />
-      <button
-        onClick={() => {
-          if (location.pathname.includes("/portal")) {
-            navigate("/opt-in");
-          } else {
-            navigate("/portal");
-          }
-        }}
-      >
-        Go to {location.pathname.includes("/portal") ? "opt-in" : "portal"}
-      </button>
       <Outlet />
     </div>
   );

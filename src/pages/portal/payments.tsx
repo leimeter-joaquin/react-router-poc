@@ -1,11 +1,12 @@
 import React from "react";
 import { Await, defer, Outlet, useLoaderData } from "react-router-dom";
+import { log } from "../../logger";
 
 type LoaderData = { isOptedIn: boolean };
 
 /* eslint-disable react-refresh/only-export-components */
 export function loader() {
-  console.log("loader payments");
+  log("payments loader", "deeppink");
 
   const promise: Promise<LoaderData> = new Promise((resolve) => {
     setTimeout(() => {

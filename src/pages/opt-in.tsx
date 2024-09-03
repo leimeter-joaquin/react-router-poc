@@ -12,6 +12,7 @@ export const Component = () => {
     console.log("isOptedIn", isOptedIn);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
   return (
     <div
       style={{
@@ -20,7 +21,7 @@ export const Component = () => {
         width: "500px",
       }}
     >
-      opt-in
+      opt-in {isOptedIn}
     </div>
   );
 };
