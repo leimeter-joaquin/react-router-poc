@@ -12,7 +12,7 @@ export const eligibilityThunk: any = createAsyncThunk(
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
       log("eligibilityThunk resolved", "gray");
-      return { isOptedIn: true };
+      return { isOptedIn: false };
     } catch (error: any) {
       return rejectWithValue(error.message);
     }
