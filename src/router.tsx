@@ -1,6 +1,6 @@
 import { createBrowserRouter, redirect } from "react-router-dom";
 import { eligibilityThunk } from "./store/eligibility/thunk";
-import { store } from "./store";
+import { store } from "./store/store";
 import Root from "./pages";
 import { log } from "./logger";
 
@@ -28,8 +28,6 @@ export const router: any = createBrowserRouter([
     ),
   },
 
-  // If you have the check in the root path, we get a loop :(
-
   {
     errorElement: <div>error</div>,
     path: "/",
@@ -55,7 +53,7 @@ export const router: any = createBrowserRouter([
 
       const state = store.getState();
 
-      // * Here we redirect to the root path to check eligibility if the user has not been checked before. We are using null for this.
+      //! Here we redirect to the root path to check eligibility if the user has not been checked before. We are using null for this.
       if (state.eligibilityReducer.isOptedIn === null) {
         log("redirecting to /", "green");
         return redirect("/");
@@ -80,7 +78,7 @@ export const router: any = createBrowserRouter([
       log("opt-in loader", "brown");
       const state = store.getState();
 
-      // * Here we redirect to the root path to check eligibility if the user has not been checked before. We are using null for this.
+      //! Here we redirect to the root path to check eligibility if the user has not been checked before. We are using null for this.
       if (state.eligibilityReducer.isOptedIn === null) {
         log("redirecting to /", "green");
         return redirect("/");

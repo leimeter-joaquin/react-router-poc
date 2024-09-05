@@ -2,7 +2,7 @@ import React from "react";
 import { Await, defer, Outlet, useLoaderData } from "react-router-dom";
 import { log } from "../../logger";
 
-type LoaderData = { isOptedIn: boolean };
+type LoaderData = { payments: string[] };
 
 /* eslint-disable react-refresh/only-export-components */
 export function loader() {
@@ -10,11 +10,11 @@ export function loader() {
 
   const promise: Promise<LoaderData> = new Promise((resolve) => {
     setTimeout(() => {
-      resolve({ isOptedIn: true });
+      resolve({ payments: ["1", "2", "3"] });
     }, 2000);
   });
 
-  return defer({ isOptedIn: promise });
+  return defer({ payments: promise });
 }
 
 export const Component = () => {
@@ -22,10 +22,10 @@ export const Component = () => {
 
   return (
     <React.Suspense fallback={<p>Loading payments</p>}>
-      <Await resolve={data.isOptedIn} errorElement={<p>payments fail</p>}>
-        {(data) => (
+      <Await resolve={data.payments} errorElement={<p>payments fail</p>}>
+        {(data: LoaderData) => (
           <div>
-            <p>payments {JSON.stringify(data.isOptedIn, null, 2)} </p>
+            <p>payments {JSON.stringify(data.payments, null, 2)} </p>
             <Outlet />
           </div>
         )}

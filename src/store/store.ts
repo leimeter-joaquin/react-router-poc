@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import eligibilityReducer from "./store/eligibility/slice";
+import eligibilityReducer from "./eligibility/slice";
 
 export const store = configureStore({
   reducer: { eligibilityReducer },
