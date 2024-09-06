@@ -2,7 +2,6 @@ import { Navigate, Outlet, useNavigate } from "react-router-dom";
 
 const Root = () => {
   const navigate = useNavigate();
-  // TODO: WHy doesn't the root loader run when navigating to "/" ?
 
   return (
     <div>
